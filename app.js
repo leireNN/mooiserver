@@ -7,9 +7,11 @@ var bodyParser = require('body-parser');
 
 
 //DB
+console.log("Conectando a la base de datos...");
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/nodetest1');
+console.log("Conexión a la base de datos realizada");
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
