@@ -10,13 +10,20 @@ var bodyParser = require('body-parser');
 console.log("Conectando a la base de datos...");
 var mongo = require('mongodb');
 var monk = require('monk');
-var db = monk('localhost:27017/nodetest1');
+var db = monk('localhost:27017/Mooi');
 console.log("Conexión a la base de datos realizada");
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var ia = require('./routes/ia');
+var train = require('./controllers/ia');
+global.BrainJSClassifier = require('natural-brain');
+global.classifier = new BrainJSClassifier();
+
 
 var app = express();
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,8 +42,10 @@ app.use(function(req,res,next){
     next();
 });
 
+train.train(db);
 app.use('/', routes);
 app.use('/users', users);
+app.use('/text', ia);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
