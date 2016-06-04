@@ -6,11 +6,12 @@ var router = express.Router();
 /* GET home page. */
 router.post('/', function(req, res, next) {
 
-  console.log("recibido get");
-  console.log(req.body.text);
+  console.log("recibido post de text...");
+  console.log(req.body.userText);
 
-  var text = req.body.text;
+  var text = req.body.userText;
   var clasi = classifier.classify(text);
+  console.log(clasi);
   // classifier.addDocument('its hurt me a lot', 'hurt');
   // classifier.addDocument('its pain', 'hurt');
   // classifier.addDocument('i fell', 'alarm');
