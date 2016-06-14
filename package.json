@@ -17,5 +17,6 @@
     "morgan": "~1.6.1",
     "natural-brain": "^0.2.0",
     "serve-favicon": "~2.3.0"
-  }
+  },
+  "license": "MIT"
 }

@@ -35,7 +35,7 @@ router.post('/', function(req, res, next) {
 
   //Si es red/orange se mete en alarmas
 
-  if(clasi == "red" || clasi == "orange"){
+  if(clasi == "assertive" || clasi == "energized"){
     collection = db.get('alarms');
     collection.insert({
       userText: text, time: now, userId: req.body.userId, color: clasi
@@ -48,22 +48,25 @@ router.post('/', function(req, res, next) {
 
   //Respuestas por nivel de gravedad
 
-  var red = "I asked for help , please give me more information";
-  var orange = "Are you ok?";
-  var green = "Hello, tell me...";
+  var red = "He pedido ayuda, por favor dame más datos";
+  var orange = "¿Estás bien?";
+  var green = "Hola, dime";
+  var presentation = "Hola soy moi un sistema de tele asistencia, desarrollado como T F G "
 
   //Envio de respuestas y guardado en collection conversation
 
-  if(clasi == "red"){
+  if(clasi == "assertive"){
     collection.insert({
       userText: text, keyword: clasi, iaText: red, time: now, userId: req.body.userId
     });
     res.send(red);
-  }else if(clasi == "orange"){
+  }else if(clasi == "energized"){
     collection.insert({
       userText: text, keyword: clasi, iaText: orange, time: now, userId: req.body.userId
     });
     res.send(orange);
+  }else if(clasi == "presentation"){
+    res.send(presentation);
   }else{
     collection.insert({
       userText: text, keyword: clasi, iaText: green, time: now, userId: req.body.userId

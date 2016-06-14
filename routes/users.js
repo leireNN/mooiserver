@@ -26,13 +26,56 @@ router.post('/login', function(req, res, next) {
     });
 });
 
+router.post('/register', function(req, res, next) {
+  console.log("Recibida petición de registro: " + JSON.stringify(req.body));
+  var user = req.body;
+
+  var db = req.db;
+  var collection = db.get('usercollection');
+
+  //Inserción en la base de datos
+
+  //TO-DO Comprobación de previa existencia del username
+  collection.insert({
+    username: user.username,
+    password: user.password,
+    email: user.email,
+    firstname: user.firstname,
+    lastname: user.lastname,
+    lastname2: user.lastname2
+  }, {}, function(e,docs){
+    console.log("Error en el insert");
+    if(e){
+      res.send(e);
+    }else{
+      res.send(docs);
+    }
+  });
+
+
+
+});
+
 router.post('/alarms', function(req, res, next) {
-  //TO-DO Ordenar alarmas por tiempo 
+  //TO-DO Ordenar alarmas por tiempo
   console.log("Recibida petición de alarmas: " + JSON.stringify(req.body));
   var user = req.body;
   var db = req.db;
     var collection = db.get('alarms');
-    collection.find({userId:user.userId},{},function(e,docs){
+    collection.find({userId:user.userId},{limit: 5, sort: {time:-1}},function(e,docs){
+      console.log(docs);
+      res.send(docs);
+
+    });
+});
+
+router.post('/getNotifications', function(req, res, next) {
+  //TO-DO Ordenar alarmas por tiempo
+  console.log("Recibida petición de notificaciones: " + JSON.stringify(req.body));
+  var user = req.body;
+  var db = req.db;
+    var collection = db.get('usercollection');
+    collection.find({username:user.username},{},function(e,docs){
       console.log(docs);
       res.send(docs);
 
@@ -44,7 +87,7 @@ router.post('/getLastConversations', function(req, res, next) {
   var user = req.body;
   var db = req.db;
     var collection = db.get('conversation');
-    collection.find({userId:user.userId},{sort: {time: -1}},function(e,docs){
+    collection.find({userId:user.userId},{limit:3, sort: {time: -1}},function(e,docs){
       console.log(docs);
       res.send(docs);
     });
