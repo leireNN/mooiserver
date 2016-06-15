@@ -82,6 +82,32 @@ router.post('/getNotifications', function(req, res, next) {
     });
 });
 
+router.post('/updateAlarms', function(req, res, next) {
+  //TO-DO Ordenar alarmas por tiempo
+  console.log("Recibida petición de actualización de medicamentos: " + JSON.stringify(req.body));
+  var user = req.body;
+  var db = req.db;
+  var collection = db.get('usercollection');
+    collection.find({username:user.username},{},function(e,docs){
+      console.log(docs);
+      var medicamentos = docs[0].medicamentos;
+      medicamentos.push({time:user.time, description: user.description})
+      console.log("Recibida petición de actualización de medicamentos2: " + JSON.stringify(medicamentos));
+
+        var collection = db.get('usercollection');
+        collection.update(
+          { "username" : user.username },
+          { $set: { "medicamentos" : medicamentos } }, function(docs){
+            res.send(docs);
+          }
+       );
+
+
+    });
+
+
+});
+
 router.post('/getLastConversations', function(req, res, next) {
   console.log("Recibida petición de last conversations: " + JSON.stringify(req.body));
   var user = req.body;
